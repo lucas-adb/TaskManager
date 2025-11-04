@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Models;
 using TaskManager.Models.Dto;
 using TaskManager.Services;
 
@@ -13,9 +14,9 @@ namespace TaskManager.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<TaskReadDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null)
         {
-            var tasks = await _service.GetAllAsync();
+            var tasks = await _service.GetAllAsync(status, responsible, completionDate);
             return Ok(tasks);
         }
 

@@ -52,9 +52,9 @@ public class TaskService : ITaskService
     };
   }
 
-  public async Task<List<TaskReadDto>> GetAllAsync()
+  public async Task<List<TaskReadDto>> GetAllAsync(TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null)
   {
-    var list = await _repo.GetAllAsync();
+    var list = await _repo.GetAllAsync(status, responsible, completionDate);
     return list.Select(e => new TaskReadDto
     {
       Id = e.Id,

@@ -7,8 +7,33 @@ Accept: application/json
 
 ###
 
-### Get all tasks
+### Get all tasks (no filters)
 GET {{TaskManager_HostAddress}}/api/task
+Accept: application/json
+
+###
+
+### Get all tasks filtered by status
+# status values: Pendente, EmAndamento, Concluida
+GET {{TaskManager_HostAddress}}/api/task?status=Pendente
+Accept: application/json
+
+###
+
+### Get all tasks filtered by responsible (exact match)
+GET {{TaskManager_HostAddress}}/api/task?responsible=Lucas
+Accept: application/json
+
+###
+
+### Get all tasks filtered by completionDate (format: YYYY-MM-DD)
+GET {{TaskManager_HostAddress}}/api/task?completionDate=2025-11-04
+Accept: application/json
+
+###
+
+### Get all tasks with combined filters (status + responsible + completionDate)
+GET {{TaskManager_HostAddress}}/api/task?status=EmAndamento&responsible=Lucas&completionDate=2025-11-04
 Accept: application/json
 
 ###
