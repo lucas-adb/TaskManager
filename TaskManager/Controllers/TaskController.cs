@@ -40,7 +40,7 @@ namespace TaskManager.Controllers
             return CreatedAtRoute("GetTaskById", new { id = created.Id }, created);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(typeof(TaskReadDto), StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
