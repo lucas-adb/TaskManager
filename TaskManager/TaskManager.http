@@ -1,0 +1,9 @@
+@TaskManager_HostAddress = http://localhost:5039
+
+GET {{TaskManager_HostAddress}}/api/task/health-check
+Accept: application/json
+
+###
+
+GET {{TaskManager_HostAddress}}/api/task
+Accept: application/json
