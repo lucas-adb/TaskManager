@@ -38,5 +38,15 @@ namespace TaskManager.Controllers
             var created = await _service.CreateAsync(createDto);
             return CreatedAtRoute("GetTaskById", new { id = created.Id }, created);
         }
+
+        [HttpDelete]
+        [ProducesResponseType(typeof(TaskReadDto), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var removed = await _service.RemoveByIdAsync(id);
+            if (!removed) return NotFound();
+            return NoContent();
+        }
     }
 }

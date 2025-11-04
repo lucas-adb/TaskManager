@@ -24,4 +24,13 @@ public class TaskRepository : ITaskRepository
   {
     return await _db.Tasks.AsNoTracking().ToListAsync();
   }
+
+  public async Task<bool> RemoveByIdAsync(int id)
+  {
+    var entity = await _db.Tasks.FindAsync(id);
+    if (entity is null) return false;
+    _db.Tasks.Remove(entity);
+    await _db.SaveChangesAsync();
+    return true;
+  }
 }

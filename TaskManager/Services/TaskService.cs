@@ -66,4 +66,9 @@ public class TaskService : ITaskService
       Responsible = e.Responsible
     }).ToList();
   }
+
+  public async Task<bool> RemoveByIdAsync(int id)
+  {
+    return await _repo.RemoveByIdAsync(id);
+  }
 }
