@@ -12,3 +12,7 @@ dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet ef migrations add <nomeDaMigration>
 dotnet ef database update
 ```
+
+# Fluxo
+
+Controller -> Service -> Repository -> DbContext -> Banco de Dados.

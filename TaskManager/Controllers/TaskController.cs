@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TaskManager.Data;
-using TaskManager.Models;
+using TaskManager.Models.Dto;
+using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
@@ -10,16 +8,35 @@ namespace TaskManager.Controllers
     [ApiController]
     public class TaskController : TaskManagerBaseController
     {
-        private readonly AppDbContext _db;
-        public TaskController(AppDbContext db) => _db = db;
+        private readonly ITaskService _service;
+        public TaskController(ITaskService service) => _service = service;
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<TaskEntity>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<TaskReadDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var tasks = await _db.Tasks.AsNoTracking().ToListAsync();
+            var tasks = await _service.GetAllAsync();
             return Ok(tasks);
         }
 
+        [HttpGet("{id:int}", Name = "GetTaskById")]
+        [ProducesResponseType(typeof(TaskReadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var dto = await _service.GetByIdAsync(id);
+            if (dto is null) return NotFound();
+            return Ok(dto);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(TaskReadDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create([FromBody] TaskCreateDto createDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var created = await _service.CreateAsync(createDto);
+            return CreatedAtRoute("GetTaskById", new { id = created.Id }, created);
+        }
     }
 }
