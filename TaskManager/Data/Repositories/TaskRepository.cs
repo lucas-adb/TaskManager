@@ -1,6 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Models;
+using TaskManager.Models.Dto;
 
 namespace TaskManager.Data.Repositories;
 
@@ -26,7 +27,7 @@ public class TaskRepository : ITaskRepository
     if (status.HasValue) query = query.Where(t => t.Status == status.Value);
     if (!string.IsNullOrWhiteSpace(responsible)) query = query.Where(t => t.Responsible == responsible);
     if (completionDate.HasValue) query = query.Where(t => t.CompletionDate == completionDate.Value);
-    return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+    return await query.OrderBy(b => b.Title).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
   }
 
   public async Task<bool> RemoveByIdAsync(int id)
@@ -36,5 +37,14 @@ public class TaskRepository : ITaskRepository
     _db.Tasks.Remove(entity);
     await _db.SaveChangesAsync();
     return true;
+  }
+
+  public async Task<TaskEntity?> UpdateByIdAsync(int id, Action<TaskEntity> applyChanges)
+  {
+    var existing = await _db.Tasks.FindAsync(id);
+    if (existing is null) return null;
+    applyChanges(existing);
+    await _db.SaveChangesAsync();
+    return existing;
   }
 }

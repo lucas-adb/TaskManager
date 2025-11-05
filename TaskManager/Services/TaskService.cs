@@ -37,38 +37,63 @@ public class TaskService : ITaskService
 
   public async Task<TaskReadDto?> GetByIdAsync(int id)
   {
-    var e = await _repo.GetByIdAsync(id);
-    if (e is null) return null;
+    var entity = await _repo.GetByIdAsync(id);
+    if (entity is null) return null;
 
     return new TaskReadDto
     {
-      Id = e.Id,
-      Title = e.Title,
-      Description = e.Description,
-      CreationDate = e.CreationDate,
-      CompletionDate = e.CompletionDate,
-      Status = e.Status,
-      Responsible = e.Responsible
+      Id = entity.Id,
+      Title = entity.Title,
+      Description = entity.Description,
+      CreationDate = entity.CreationDate,
+      CompletionDate = entity.CompletionDate,
+      Status = entity.Status,
+      Responsible = entity.Responsible
     };
   }
 
   public async Task<List<TaskReadDto>> GetAllAsync(int pageNumber, int pageSize, TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null)
   {
     var list = await _repo.GetAllAsync(pageNumber, pageSize, status, responsible, completionDate);
-    return list.Select(e => new TaskReadDto
+    return list.Select(entity => new TaskReadDto
     {
-      Id = e.Id,
-      Title = e.Title,
-      Description = e.Description,
-      CreationDate = e.CreationDate,
-      CompletionDate = e.CompletionDate,
-      Status = e.Status,
-      Responsible = e.Responsible
+      Id = entity.Id,
+      Title = entity.Title,
+      Description = entity.Description,
+      CreationDate = entity.CreationDate,
+      CompletionDate = entity.CompletionDate,
+      Status = entity.Status,
+      Responsible = entity.Responsible
     }).ToList();
   }
 
   public async Task<bool> RemoveByIdAsync(int id)
   {
     return await _repo.RemoveByIdAsync(id);
+  }
+
+  public async Task<TaskReadDto?> UpdateAsync(int id, TaskUpdateDto dto)
+  {
+    var updated = await _repo.UpdateByIdAsync(id, existing =>
+    {
+      if (dto.Title is not null) existing.Title = dto.Title;
+      if (dto.Description is not null) existing.Description = dto.Description;
+      if (dto.CompletionDate.HasValue) existing.CompletionDate = dto.CompletionDate;
+      if (dto.Status.HasValue) existing.Status = dto.Status.Value;
+      if (dto.Responsible is not null) existing.Responsible = dto.Responsible;
+    });
+
+    if (updated is null) return null;
+
+    return new TaskReadDto
+    {
+      Id = updated.Id,
+      Title = updated.Title,
+      Description = updated.Description,
+      CreationDate = updated.CreationDate,
+      CompletionDate = updated.CompletionDate,
+      Status = updated.Status,
+      Responsible = updated.Responsible
+    };
   }
 }

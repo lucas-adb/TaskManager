@@ -49,5 +49,15 @@ namespace TaskManager.Controllers
             if (!removed) return NotFound();
             return NoContent();
         }
+
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(typeof(TaskReadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(int id, [FromBody] TaskUpdateDto dto)
+        {
+            var updated = await _service.UpdateAsync(id, dto);
+            if (updated is null) return NotFound();
+            return Ok(updated);
+        }
     }
 }
