@@ -8,7 +8,7 @@ Construir uma API em .NET 8 para gerenciar tarefas de um sistema de produtividad
 
 A API deve permitir:
 
-1.  **Criar uma tarefa**
+1.  **Criar uma tarefa** ✅
 
     - Uma tarefa contém:
       - Id (gerado automaticamente)
@@ -19,20 +19,20 @@ A API deve permitir:
       - Status (Pendente, Em Andamento, Concluída)
       - Responsável (nome de quem deve realizar a tarefa)
 
-2.  **Listar todas as tarefas**
+2.  **Listar todas as tarefas** ✅
 
     - Permitir filtro por:
       - Status
       - Responsável
       - Data limite
 
-3.  **Buscar uma tarefa por Id**
+3.  **Buscar uma tarefa por Id** ✅
 
-4.  **Atualizar uma tarefa**
+4.  **Atualizar uma tarefa** ✅
 
     - Atualizar título, descrição, status, data limite e responsável.
 
-5.  **Excluir uma tarefa por Id**
+5.  **Excluir uma tarefa por Id** ✅
 
 ## Requisitos Técnicos
 
@@ -58,7 +58,7 @@ A API deve permitir:
 
 Implemente uma das seguintes features:
 
-- Paginação com `skip` e `take`
-- Filtros combinados (status + responsável)
+- Paginação com `skip` e `take` ✅
+- Filtros combinados (status + responsável) ✅
 - Persistência em memória com `InMemoryDatabase` para testes
 - Testes unitários com xUnit
