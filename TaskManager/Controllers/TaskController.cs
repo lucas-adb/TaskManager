@@ -14,9 +14,9 @@ namespace TaskManager.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<TaskReadDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll([FromQuery] TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null)
+        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, int pageSize = 5, TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null)
         {
-            var tasks = await _service.GetAllAsync(status, responsible, completionDate);
+            var tasks = await _service.GetAllAsync(pageNumber, pageSize, status, responsible, completionDate);
             return Ok(tasks);
         }
 

@@ -20,13 +20,13 @@ public class TaskRepository : ITaskRepository
     return await _db.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
   }
 
-  public async Task<List<TaskEntity>> GetAllAsync(TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null)
+  public async Task<List<TaskEntity>> GetAllAsync(int pageNumber, int pageSize, TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null)
   {
     IQueryable<TaskEntity> query = _db.Tasks.AsNoTracking();
     if (status.HasValue) query = query.Where(t => t.Status == status.Value);
     if (!string.IsNullOrWhiteSpace(responsible)) query = query.Where(t => t.Responsible == responsible);
     if (completionDate.HasValue) query = query.Where(t => t.CompletionDate == completionDate.Value);
-    return await query.ToListAsync();
+    return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
   }
 
   public async Task<bool> RemoveByIdAsync(int id)

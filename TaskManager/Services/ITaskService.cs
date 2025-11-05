@@ -7,6 +7,6 @@ public interface ITaskService
 {
   Task<TaskReadDto> CreateAsync(TaskCreateDto dto);
   Task<TaskReadDto?> GetByIdAsync(int id);
-  Task<List<TaskReadDto>> GetAllAsync(TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null);
+  Task<List<TaskReadDto>> GetAllAsync(int pageNumber, int pageSize, TaskStatusEnum? status = null, string? responsible = null, DateOnly? completionDate = null);
   Task<bool> RemoveByIdAsync(int id);
 }
