@@ -60,5 +60,5 @@ Implemente uma das seguintes features:
 
 - Paginação com `skip` e `take` ✅
 - Filtros combinados (status + responsável) ✅
-- Persistência em memória com `InMemoryDatabase` para testes
-- Testes unitários com xUnit
+- Persistência em memória com `InMemoryDatabase` para testes ✅ (Apenas Services)
+- Testes unitários com xUnit ✅
